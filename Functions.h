@@ -1,6 +1,7 @@
 #pragma once
 #include "Lunacy/Lunacy.hpp"
 
+using namespace Sexy;
 // Load resources in this function. Called only once when the game is started.
 void __stdcall GameLoaded(LawnApp*);
 

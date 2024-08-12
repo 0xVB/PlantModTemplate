@@ -1,6 +1,7 @@
 #include "Lunacy/EffectSystem.h"
 #include "Lunacy/LawnApp.h"
 #include "Lunacy/Zombie.h"
+#include "Lunacy/Lawn.h"
 
 CONST DWORD UPDATE = 0x52AE60;
 __declspec(naked) void Zombie::Update()
@@ -19,7 +20,7 @@ __declspec(naked) void Zombie::Draw(Sexy::Graphics*)
 	{
 		push ebx
 		mov ebx, ecx
-		push[esp + 0x8]
+		push [esp + 0x8]
 		call DRAW
 		pop ebx
 		ret 0x4
@@ -42,10 +43,10 @@ __declspec(naked) void Zombie::Init(int, ZombieType, unsigned char, Zombie*, int
 	__asm
 	{
 		mov eax, [esp + 0x4]
-		push[esp + 0x14]
-		push[esp + 0x14]
-		push[esp + 0x14]
-		push[esp + 0x14]
+		push [esp + 0x14]
+		push [esp + 0x14]
+		push [esp + 0x14]
+		push [esp + 0x14]
 		push ecx
 		call INIT
 		ret 0x14
@@ -116,7 +117,7 @@ __declspec(naked) void Zombie::SetFuture(bool)
 	{
 		push esi
 		mov esi, ecx
-		push[esp + 0x8]
+		push [esp + 0x8]
 		call SETF
 		pop esi
 		ret 0x4
@@ -130,7 +131,7 @@ __declspec(naked) void Zombie::SetMustache(bool)
 	{
 		push esi
 		mov esi, ecx
-		push[esp + 0x8]
+		push [esp + 0x8]
 		call SETM
 		pop esi
 		ret 0x4
@@ -145,7 +146,7 @@ __declspec(naked) void Zombie::TakeDamage(int, DamageFlag)
 		push esi
 		mov esi, ecx
 		mov eax, [esp + 0xC]
-		push[esp + 0x8]
+		push [esp + 0x8]
 		call TAKEDAMAGE
 		pop esi
 		ret 0x8
@@ -228,4 +229,9 @@ void Zombie::Chill(int Chill, int Freeze)
 	mIceTrapCounter = max(Freeze, mIceTrapCounter);
 	mChilledCounter = max(Chill, mChilledCounter);
 	UpdateAnimSpeed();
+}
+
+Zombie* TryToGet(ZombieID ID)
+{
+	return LawnApp::GetApp()->mLawn->mZombies.Fetch((unsigned int)ID);
 }
